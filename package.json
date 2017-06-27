@@ -1,0 +1,23 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "A HTTP REST API in Node.js that fronts the OpenWeatherMap service",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "author": "Wei Xu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3",
+    "passport": "^0.3.2",
+    "passport-strategy": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "supertest": "^3.0.0",
+    "supertest-as-promised": "^4.0.2"
+  }
+}
