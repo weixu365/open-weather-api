@@ -1,3 +1,4 @@
+const Bluebird = require('bluebird');
 const chai = require('chai');
 const request = require('supertest');
 const server = require('../app');
@@ -52,5 +53,49 @@ describe('Weather app rest api test', () => {
     return result
       .expect(500)
       .then(response => expect(response.body.message).equals('Internal Server Error'));
+  });
+
+  it('Should return rate limit information in header', () => {
+    const result = request(server)
+      .get('/weather/au/melbourne')
+      .set('Authorization', `test-api-key-fake${new Date().getTime()}`);
+
+    return result
+      .expect(200)
+      .expect('X-RateLimit-Limit', '5')
+      .expect('X-RateLimit-Remaining', '4')
+      .then((response) => {
+        expect(response.body).have.property('weather');
+      });
+  });
+
+  it('Should return 429 when requests exceeded rate limit', () => {
+    const apiKey = `test-api-key-exceeded-${new Date().getTime()}`;
+
+    return Bluebird.each([...new Array(5)], (item, index) => {
+      const result = request(server)
+        .get('/weather/au/melbourne')
+        .set('Authorization', apiKey);
+
+      return result
+        .expect(200)
+        .expect('X-RateLimit-Remaining', String(5 - index - 1))
+        .then((response) => {
+          expect(response.body).have.property('weather');
+        });
+    })
+      .then(() => {
+        const result = request(server)
+          .get('/weather/au/melbourne')
+          .set('Authorization', apiKey);
+
+        return result
+          .expect(429)
+          .expect('X-RateLimit-Limit', '5')
+          .expect('X-RateLimit-Remaining', '0')
+          .then((response) => {
+            expect(response.body.message).equals('Too many requests');
+          });
+      });
   });
 });
