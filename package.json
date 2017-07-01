@@ -5,15 +5,18 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "check": "eslint .",
-    "test": "istanbul cover node_modules/.bin/_mocha --recursive test/* && istanbul check-coverage --statements 100 --branches 100"
+    "test": "eslint . && istanbul cover node_modules/.bin/_mocha --recursive test/* && istanbul check-coverage --statements 100 --branches 100"
   },
   "author": "Wei Xu",
   "license": "ISC",
   "dependencies": {
+    "bunyan": "^1.8.10",
     "express": "^4.15.3",
+    "lodash": "^4.17.4",
     "passport": "^0.3.2",
-    "passport-strategy": "^1.0.0"
+    "passport-strategy": "^1.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   },
   "devDependencies": {
     "chai": "^4.0.2",

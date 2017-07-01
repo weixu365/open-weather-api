@@ -29,7 +29,7 @@ describe('RateLimit unit test', () => {
     response = new ResponseStub();
   });
 
-  it('should return rate limit headers after received a request', (done) => {
+  it('should return rate limit info in response header', (done) => {
     const rateLimit = new RateLimit({ maxRequests: 2, timeWindowInMs: ONE_SECOND });
     const now = new Date().getTime();
 
@@ -41,7 +41,7 @@ describe('RateLimit unit test', () => {
     });
   });
 
-  it('should return 429 with rate limit headers after rate exceeded', (done) => {
+  it('should return 429 with rate limit info in response header after rate exceeded', (done) => {
     const rateLimit = new RateLimit({ maxRequests: 1, timeWindowInMs: ONE_SECOND });
     const now = new Date().getTime();
 
