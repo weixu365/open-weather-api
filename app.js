@@ -32,6 +32,12 @@ app.get('/weather/:country/:city', rateLimit, (req, res, next) => {
     .catch(next);
 });
 
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
+  logger.error('Error occurred', { error });
+  res.status(500).json({ message: 'Internal Server Error' });
+});
+
 app.listen(3000);
 
 module.exports = app;
